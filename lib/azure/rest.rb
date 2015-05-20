@@ -108,12 +108,12 @@ end
       
       
       
-      unless @content_type.nil?
+      # If the content_type has been set then use the content_type instead of the normal flow.
+      if @content_type.nil?
+        request["content-type"] =  (verb == 'put') ? 'text/plain' : 'application/xml'
+      else 
         request["content-type"] =  @content_type
         @content_type = nil
-
-      else 
-        request["content-type"] =  (verb == 'put') ? 'text/plain' : 'application/xml'
       end
       
       
