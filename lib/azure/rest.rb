@@ -23,13 +23,12 @@ module AzureAPI
 
   class Rest
     
-    
     def initialize(params)
       @subscription_id = params[:azure_subscription_id]
       @pem_file = params[:azure_mgmt_cert]
       @host_name = params[:azure_api_host_name]
       @verify_ssl = params[:verify_ssl_cert]
-     
+      @content_type = nil
     end
 
 def set_content_type(content_type)
@@ -41,8 +40,8 @@ end
                     params = '',
                     services = true)
                     
-      @content_type = content_type unless content_type.nil?                    
-                    
+                     
+                  
       svc_str = services ? '/services' : ''
       request_url =
         "https://#{@host_name}/#{@subscription_id}#{svc_str}/#{service_name}"
