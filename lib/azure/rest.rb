@@ -113,7 +113,6 @@ end
         request["content-type"] =  (verb == 'put') ? 'text/plain' : 'application/xml'
       else 
         request["content-type"] =  @content_type
-        @content_type = nil
       end
       
       
