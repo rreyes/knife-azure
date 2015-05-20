@@ -96,9 +96,8 @@ module AzureAPI
       elsif verb == 'put'
         request = Net::HTTP::Put.new(uri.request_uri)
       end
-      text = verb == 'put'
       request["x-ms-version"] = "2014-04-01"
-      request["content-type"] = text ? "text/plain" : "application/xml"
+      request["content-type"] =  "application/xml"
       request["accept"] = "application/xml"
       request["accept-charset"] = "utf-8"
       request.body = body
