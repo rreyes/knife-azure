@@ -22,18 +22,27 @@ require "nokogiri"
 module AzureAPI
 
   class Rest
+    
+    
     def initialize(params)
       @subscription_id = params[:azure_subscription_id]
       @pem_file = params[:azure_mgmt_cert]
       @host_name = params[:azure_api_host_name]
       @verify_ssl = params[:verify_ssl_cert]
+     
     end
 
+def set_content_type(content_type)
+  @content_type = content_type
+end
     def query_azure(service_name,
                     verb = 'get',
                     body = '',
                     params = '',
                     services = true)
+                    
+      @content_type = content_type unless content_type.nil?                    
+                    
       svc_str = services ? '/services' : ''
       request_url =
         "https://#{@host_name}/#{@subscription_id}#{svc_str}/#{service_name}"
@@ -97,7 +106,18 @@ module AzureAPI
         request = Net::HTTP::Put.new(uri.request_uri)
       end
       request["x-ms-version"] = "2014-04-01"
-      request["content-type"] =  "application/xml"
+      
+      
+      
+      unless @content_type.nil?
+        request["content-type"] =  @content_type
+        @content_type = nil
+
+      else 
+        request["content-type"] =  (verb == 'put') ? 'text/plain' : 'application/xml'
+      end
+      
+      
       request["accept"] = "application/xml"
       request["accept-charset"] = "utf-8"
       request.body = body
