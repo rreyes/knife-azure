@@ -46,6 +46,7 @@ end
       request_url =
         "https://#{@host_name}/#{@subscription_id}#{svc_str}/#{service_name}"
       print '.'
+      Chef::Log.debug "#{request_url}"
       response = http_query(request_url, verb, body, params)
       if response.code.to_i == 307
         Chef::Log.debug "Redirect to #{response['Location']}"
