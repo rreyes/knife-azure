@@ -29,11 +29,17 @@ module AzureAPI
       @host_name = params[:azure_api_host_name]
       @verify_ssl = params[:verify_ssl_cert]
       @content_type = nil
+      @x_ms_version = nil
     end
 
-def set_content_type(content_type)
-  @content_type = content_type
-end
+    def set_content_type(content_type)
+      @content_type = content_type
+    end
+
+    def set_x_ms_version(x_ms_version)
+      @x_ms_version = x_ms_version
+    end
+
     def query_azure(service_name,
                     verb = 'get',
                     body = '',
@@ -105,9 +111,13 @@ end
       elsif verb == 'put'
         request = Net::HTTP::Put.new(uri.request_uri)
       end
-      request["x-ms-version"] = "2014-04-01"
-      
-      
+
+      if @x_ms_version.nil?
+        request["x-ms-version"] = "2014-04-01"
+      else
+        request["x-ms-version"] =  @x_ms_version
+      end
+
       
       # If the content_type has been set then use the content_type instead of the normal flow.
       if @content_type.nil?
